@@ -56,6 +56,7 @@
 - [Hostinger VPS Setup](#hostinger-vps-setup)
 - [Oracle Cloud Free Tier Setup](#oracle-cloud-free-tier-setup)
 - [Raspberry Pi Setup](#raspberry-pi-setup)
+- [ESP32 Embedded (MimiClaw)](#esp32-embedded-mimiclaw)
 - [Docker Deployment](#docker-deployment)
 - [Security & Hardening](#security--hardening)
 - [Configuration](#configuration)
@@ -101,7 +102,7 @@
 
 OpenClaw is an **agentic AI interface** that:
 
-- Runs **locally on your own hardware** (Mac Mini, VPS, Raspberry Pi, or serverless)
+- Runs **locally on your own hardware** (Mac Mini, VPS, Raspberry Pi, ESP32-S3, or serverless)
 - Connects to **10+ messaging platforms** simultaneously
 - Has **persistent memory** across sessions (saves files, breadcrumbs, chat histories)
 - Handles **tasks spanning hours or days** without losing context
@@ -186,6 +187,7 @@ That's it. The wizard walks you through API key setup, channel configuration, an
 | **xCloud Managed** | 5 min | None | Full managed hosting |
 | **Manual VPS** | 10 min | Medium | Full control |
 | **Raspberry Pi** | 10 min | Medium | Low-power, always-on |
+| **ESP32-S3 ([MimiClaw](https://github.com/memovai/mimiclaw))** | 10 min | Medium | Cheapest hardware ($5), pure C, no OS |
 
 ### Method 1: Official Installer Script
 
@@ -347,6 +349,7 @@ Hire someone to set it up for you.
 | xCloud Managed | **$24** | 5 min | **None** | **Yes** | Full managed hosting |
 | ClawCloud Starter | **$29** | < 1 min | **None** | **Yes** | Premium managed |
 | Raspberry Pi 5 | **$0**/mo | 30 min | Medium | No | Low-power, always-on |
+| ESP32-S3 (MimiClaw) | **$0**/mo | 10 min | Medium | No | Cheapest ($5 chip), no OS |
 | Mac Mini | **$0**/mo | 10 min | Easy | No | Privacy-first, local |
 
 ---
@@ -407,6 +410,7 @@ The **real cost** of running OpenClaw is the AI model API, not infrastructure.
 | **Managed Easy** | xCloud ($24) | Mixed ($30) | **$54** | Zero technical setup |
 | **Cloudflare** | Workers ($5+$30) | Mixed ($20) | **$55** | Serverless architecture |
 | **Local LLM** | Raspberry Pi 5 ($0/mo) | Ollama ($0) | **$0** | After $80 hardware purchase |
+| **Embedded** | ESP32-S3 ($0/mo) | Claude API ($5) | **$5** | After $5 hardware purchase (MimiClaw) |
 | **Power User** | DigitalOcean ($24) | Opus ($200) | **$224** | Heavy professional use |
 | **Extreme** | Dedicated ($50) | All models ($573) | **$623** | One developer's real report |
 
@@ -557,6 +561,26 @@ openclaw onboard --install-daemon
 
 - [OpenClaw on Raspberry Pi - ajfisher](https://ajfisher.me/2026/02/03/openclaw-raspberrypi-howto/)
 - [OpenClaw on Raspberry Pi - Adafruit](https://learn.adafruit.com/openclaw-on-raspberry-pi)
+
+---
+
+## ESP32 Embedded (MimiClaw)
+
+[MimiClaw](https://github.com/memovai/mimiclaw) implements OpenClaw's core principles on a **$5 ESP32-S3** microcontroller. Written entirely in pure C — no Linux, no Node.js, no server infrastructure needed.
+
+| Spec | Detail |
+|------|--------|
+| **Hardware** | ESP32-S3 (16 MB flash, 8 MB PSRAM) |
+| **Cost** | ~$5 (chip only) |
+| **Language** | Pure C (ESP-IDF v5.5+) |
+| **AI Backend** | Anthropic Claude API with ReAct agent loop |
+| **Messaging** | Telegram |
+| **Memory** | Persistent local storage (SOUL.md, USER.md, MEMORY.md on flash) |
+| **Features** | Tool use (web search, time), dual-core processing, WebSocket gateway, runtime CLI config |
+
+The smallest and cheapest way to run an OpenClaw-style AI agent — proving the core architecture (agent loop, persistent memory, tool calling, chat integration) can work without an operating system or runtime environment.
+
+- [GitHub - memovai/mimiclaw](https://github.com/memovai/mimiclaw)
 
 ---
 
@@ -816,6 +840,7 @@ tar -czvf ~/openclaw_backup_$(date +%Y%m%d).tar.gz -C "$HOME" .openclaw
 | **Typical CPU** | ~13.5 t/s | Non-time-critical tasks |
 | **Oracle ARM (7B)** | 5-10 t/s | Free tier, acceptable |
 | **Raspberry Pi 5** | 2-5 t/s | Slow but works |
+| **ESP32-S3 (MimiClaw)** | Cloud API | No local inference, calls Claude API via Wi-Fi |
 
 ### Memory for Local Models
 
@@ -1023,6 +1048,7 @@ Capabilities: CDP, ARIA snapshots, screenshots, tab management, click/type/drag,
 ### Local Hardware
 
 - [Raspberry Pi - ajfisher](https://ajfisher.me/2026/02/03/openclaw-raspberrypi-howto/) | [Adafruit](https://learn.adafruit.com/openclaw-on-raspberry-pi)
+- [ESP32-S3 MimiClaw](https://github.com/memovai/mimiclaw) — OpenClaw core on a $5 chip, pure C, no Linux/Node.js
 - [Ollama Guide](https://codersera.com/blog/openclaw-ollama-setup-guide-2026/) | [LM Studio](https://codersera.com/blog/openclaw-lm-studio-setup-guide-2026/)
 - [vLLM on AMD Free](https://www.amd.com/en/developer/resources/technical-articles/2026/openclaw-with-vllm-running-for-free-on-amd-developer-cloud-.html)
 
@@ -1214,6 +1240,7 @@ node --version                     # Must be 22+
 | [BlockRunAI/ClawRouter](https://github.com/BlockRunAI/ClawRouter) | Smart LLM router (save 78% on costs) |
 | [langbot-app/LangBot](https://github.com/langbot-app/LangBot) | Multi-platform IM bot with OpenClaw |
 | [kiankyars/openclawcourse](https://github.com/kiankyars/openclawcourse) | 1-hour crash course |
+| [memovai/mimiclaw](https://github.com/memovai/mimiclaw) | Implements OpenClaw's core principles (ReAct agent loop, persistent memory, tool use, Telegram) in pure C on a $5 ESP32-S3 — no Linux, no Node.js, no server required |
 
 ---
 
